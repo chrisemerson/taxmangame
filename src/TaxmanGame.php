@@ -16,6 +16,13 @@ class TaxmanGame
         $this->numbers[1] = self::STATE_UNAVAILABLE;
     }
 
+    public function play($number)
+    {
+        $this->claimNumberAsMine($number);
+        $this->markFactorsAsTaxmans($number);
+        $this->recalculateAvailablePlays();
+    }
+
     public function getNumbers()
     {
         return $this->numbers;
@@ -35,13 +42,6 @@ class TaxmanGame
         );
     }
 
-    public function play($number)
-    {
-        $this->claimNumberAsMine($number);
-        $this->markFactorsAsTaxmans($number);
-        $this->findAvailablePlays();
-    }
-
     private function markFactorsAsTaxmans($chosenNumber)
     {
         foreach (range(1, $chosenNumber) as $number) {
@@ -54,9 +54,9 @@ class TaxmanGame
         }
     }
 
-    private function isFactorOfChosenNumber($candidateNumber, $chosenNumber)
+    private function isFactorOfChosenNumber($candidateFactor, $number)
     {
-        return $chosenNumber % $candidateNumber == 0;
+        return $number != $candidateFactor && $number % $candidateFactor == 0;
     }
 
     private function numberIsAvailable($candidateNumber)
@@ -66,7 +66,17 @@ class TaxmanGame
 
     private function numberIsMine($candidateNumber)
     {
-        return $this->numbers[$candidateNumber] == self::STATE_MINE;
+        return ($this->numbers[$candidateNumber] == self::STATE_MINE);
+    }
+
+    private function numberIsUnclaimed($candidateNumber)
+    {
+        return (!$this->numberIsMine($candidateNumber) && !$this->numberIsTaxmans($candidateNumber));
+    }
+
+    private function numberIsTaxmans($candidateNumber)
+    {
+        return ($this->numbers[$candidateNumber] == self::STATE_TAXMANS);
     }
 
     private function claimNumberAsMine($number)
@@ -83,7 +93,34 @@ class TaxmanGame
         $this->numbers[$number] = self::STATE_TAXMANS;
     }
 
-    private function findAvailablePlays()
+    private function recalculateAvailablePlays()
     {
+        foreach (array_keys($this->numbers) as $number) {
+            if (!$this->stillHasFactorsLeft($number) && $this->getNumberState($number) == self::STATE_AVAILABLE) {
+                $this->numbers[$number] = self::STATE_UNAVAILABLE;
+            }
+        }
+    }
+
+    public function getScores()
+    {
+        if ($this->getAvailablePlays() == 0) {
+
+        }
+    }
+
+    private function stillHasFactorsLeft($candidateNumber)
+    {
+        if ($candidateNumber == 1) {
+            return false;
+        }
+
+        foreach (range(1, $candidateNumber) as $number) {
+            if ($this->isFactorOfChosenNumber($number, $candidateNumber) && $this->numberIsUnclaimed($number)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

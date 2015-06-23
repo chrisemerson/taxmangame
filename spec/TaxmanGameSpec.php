@@ -1,6 +1,7 @@
 <?php
 namespace spec\CEmerson\TaxmanGame;
 
+use CEmerson\TaxmanGame\NumberNotAvailableToPlayException;
 use CEmerson\TaxmanGame\TaxmanGame;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -53,13 +54,35 @@ class TaxmanGameSpec extends ObjectBehavior
         $this->getNumberState(1)->shouldBe(TaxmanGame::STATE_TAXMANS);
     }
 
-    function it_should_throw_an_exception_if_i_try_to_play_an_unavailable_number()
+    function it_should_throw_an_exception_if_i_try_to_play_a_number_i_have_already_played()
     {
-        //TODO: Implement this spec
+        $this->beConstructedWith(5);
+        $this->play(4);
+
+        $this->shouldThrow(NumberNotAvailableToPlayException::class)->during('play', [4]);
+    }
+
+    function it_should_throw_an_exception_if_i_try_to_play_a_number_the_taxman_has_claimed()
+    {
+        $this->beConstructedWith(5);
+        $this->play(4);
+
+        $this->shouldThrow(NumberNotAvailableToPlayException::class)->during('play', [2]);
     }
 
     function it_should_recalculate_which_numbers_are_available_after_a_play()
     {
-        //TODO: Implement this spec
+        $this->beConstructedWith(6);
+        $this->play(6);
+
+        $this->getAvailablePlays()->shouldNotContain(4);
+    }
+
+    function it_should_throw_an_exception_if_i_try_to_play_a_number_that_has_no_factors_left_available()
+    {
+        $this->beConstructedWith(6);
+        $this->play(6);
+
+        $this->shouldThrow(NumberNotAvailableToPlayException::class)->during('play', [4]);
     }
 }
