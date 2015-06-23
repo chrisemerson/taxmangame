@@ -1,0 +1,4 @@
+suites:
+    taxmangame:
+        namespace: CEmerson\TaxmanGame\
+        psr4_prefix: CEmerson\TaxmanGame\
