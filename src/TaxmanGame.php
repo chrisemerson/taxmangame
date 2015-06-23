@@ -39,6 +39,7 @@ class TaxmanGame
     {
         $this->claimNumberAsMine($number);
         $this->markFactorsAsTaxmans($number);
+        $this->findAvailablePlays();
     }
 
     private function markFactorsAsTaxmans($chosenNumber)
@@ -70,11 +71,19 @@ class TaxmanGame
 
     private function claimNumberAsMine($number)
     {
-        return $this->numbers[$number] = self::STATE_MINE;
+        if ($this->numberIsAvailable($number)) {
+            $this->numbers[$number] = self::STATE_MINE;
+        } else {
+            throw new NumberNotAvailableToPlayException();
+        }
     }
 
     private function claimNumberAsTaxmans($number)
     {
-        return $this->numbers[$number] = self::STATE_TAXMANS;
+        $this->numbers[$number] = self::STATE_TAXMANS;
+    }
+
+    private function findAvailablePlays()
+    {
     }
 }

@@ -52,4 +52,14 @@ class TaxmanGameSpec extends ObjectBehavior
         $this->getNumberState(2)->shouldBe(TaxmanGame::STATE_TAXMANS);
         $this->getNumberState(1)->shouldBe(TaxmanGame::STATE_TAXMANS);
     }
+
+    function it_should_throw_an_exception_if_i_try_to_play_an_unavailable_number()
+    {
+        //TODO: Implement this spec
+    }
+
+    function it_should_recalculate_which_numbers_are_available_after_a_play()
+    {
+        //TODO: Implement this spec
+    }
 }
