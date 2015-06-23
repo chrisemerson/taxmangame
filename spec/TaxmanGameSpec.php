@@ -102,4 +102,21 @@ class TaxmanGameSpec extends ObjectBehavior
 
         $this->getScores()->shouldReturn([2, 1]);
     }
+
+    function it_should_play_a_full_complex_game()
+    {
+        $this->beConstructedWith(20);
+
+        $this->play(11);
+        $this->play(15);
+        $this->play(4);
+        $this->play(20);
+        $this->play(14);
+        $this->play(12);
+        $this->play(18);
+        $this->play(16);
+
+        $this->getAvailablePlays()->shouldReturn([]);
+        $this->getScores()->shouldReturn([110, 100]);
+    }
 }

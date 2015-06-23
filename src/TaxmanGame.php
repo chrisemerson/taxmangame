@@ -105,6 +105,8 @@ class TaxmanGame
     public function getScores()
     {
         if (count($this->getAvailablePlays()) == 0) {
+            $this->giveAllUnclaimedNumbersToTaxman();
+
             $myScore = 0;
             $taxmansScore = 0;
 
@@ -137,5 +139,14 @@ class TaxmanGame
         }
 
         return false;
+    }
+
+    private function giveAllUnclaimedNumbersToTaxman()
+    {
+        foreach (array_keys($this->numbers) as $number) {
+            if ($this->numberIsUnclaimed($number)) {
+                $this->numbers[$number] = self::STATE_TAXMANS;
+            }
+        }
     }
 }
