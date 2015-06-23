@@ -4,6 +4,7 @@ namespace CEmerson\TaxmanGame;
 class TaxmanGame
 {
     private $numbers = [];
+    private $playSequence = [];
 
     const STATE_AVAILABLE = 0;
     const STATE_UNAVAILABLE = 1;
@@ -82,6 +83,7 @@ class TaxmanGame
     private function claimNumberAsMine($number)
     {
         if ($this->numberIsAvailable($number)) {
+            $this->playSequence[] = $number;
             $this->numbers[$number] = self::STATE_MINE;
         } else {
             throw new NumberNotAvailableToPlayException();
@@ -148,5 +150,10 @@ class TaxmanGame
                 $this->numbers[$number] = self::STATE_TAXMANS;
             }
         }
+    }
+
+    public function getPlaySequence()
+    {
+        return $this->playSequence;
     }
 }
