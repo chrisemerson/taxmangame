@@ -1,6 +1,7 @@
 <?php
 namespace spec\CEmerson\TaxmanGame;
 
+use CEmerson\TaxmanGame\GameNotYetEndedException;
 use CEmerson\TaxmanGame\NumberNotAvailableToPlayException;
 use CEmerson\TaxmanGame\TaxmanGame;
 use PhpSpec\ObjectBehavior;
@@ -84,5 +85,21 @@ class TaxmanGameSpec extends ObjectBehavior
         $this->play(6);
 
         $this->shouldThrow(NumberNotAvailableToPlayException::class)->during('play', [4]);
+    }
+
+    function it_should_throw_an_exception_if_you_try_and_get_the_scores_before_game_has_ended()
+    {
+        $this->beConstructedWith(5);
+
+        $this->shouldThrow(GameNotYetEndedException::class)->during('getScores');
+    }
+
+    function it_should_return_the_scores_after_a_game_has_been_completed()
+    {
+        $this->beConstructedWith(2);
+
+        $this->play(2);
+
+        $this->getScores()->shouldReturn([2, 1]);
     }
 }

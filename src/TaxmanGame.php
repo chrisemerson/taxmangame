@@ -104,8 +104,23 @@ class TaxmanGame
 
     public function getScores()
     {
-        if ($this->getAvailablePlays() == 0) {
+        if (count($this->getAvailablePlays()) == 0) {
+            $myScore = 0;
+            $taxmansScore = 0;
 
+            foreach ($this->numbers as $number => $state) {
+                if ($state == self::STATE_MINE) {
+                    $myScore += $number;
+                }
+
+                if ($state == self::STATE_TAXMANS) {
+                    $taxmansScore += $number;
+                }
+            }
+
+            return [$myScore, $taxmansScore];
+        } else {
+            throw new GameNotYetEndedException();
         }
     }
 
