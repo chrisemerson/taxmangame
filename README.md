@@ -4,7 +4,7 @@ Taxman Game
 Implementation of the Taxman Game (found at <http://www.dsm.fordham.edu/~moniot/taxman.html>) used in order to try and
 find an optimal solution.
 
-Install PHP >= 5.6, install composer (<https://getcomposer.org/download/>), run
+Install PHP >= 5.5, install composer (<https://getcomposer.org/download/>), run
 
     composer install
 
